@@ -49,7 +49,7 @@ public with sharing class SOQL {
                 and then returning the List variable.  
            Are we going to hit any governor limits or will it throw any exception if the Select statement doesn't find any records to be returned ? */
 
-        return [SELECT Id, FirstName, LastName, Name from Contact where FirstName = 'John']; 
+        return [SELECT Id, FirstName, LastName, Name from Contact where FirstName = :firstName]; 
     }
 
     /**
@@ -193,10 +193,9 @@ public with sharing class SOQL {
     public static Decimal getTotalRevenueByStage(String stage) {
         // Use AggregateQuery to get the total revenue
         AggregateResult[] aggResult = [SELECT SUM(Amount) from Opportunity where StageName = :stage or Amount >= 10000];
-        Decimal totalRevenue = Decimal.valueOf(aggResult[0].get('expr0').toString());
 
         // Return the total revenue
-        return totalRevenue; // Replace null with the variable you used to store the result
+        return Decimal.valueOf(aggResult[0].get('expr0').toString()); // Replace null with the variable you used to store the result
     }
 
     /**
